@@ -97,13 +97,13 @@
 	    <repository>
 	      <id>nexus</id>
 	      <name>admin Nexus Release Repository</name>
-	      <url>http://54.90.80.240:8081/repository/rbc-release/</url>
+	      <url>http://172.31.31.169:8081/repository/rbc-release/</url>
 	    </repository>
 	    
 	    <snapshotRepository>
 	      <id>nexus</id>
 	      <name>admin Snapshot Nexus Repository</name>
-	      <url>http://54.90.80.240:8081/repository/rbc-snapshot/</url>
+	      <url>http://172.31.31.169:8081/repository/rbc-snapshot/</url>
 	    </snapshotRepository>
 	    
 	</distributionManagement>
