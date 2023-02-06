@@ -1,0 +1,36 @@
+// scripted
+node ('')
+{
+    def  MHD = tool name: "Maven" 
+
+stage ('1Gitclone'){
+    sh "echo this is gitclone"
+    git credentialsId: 'Github-cred', url: 'https://github.com/PrinceSelasee/maven-web-app.git'
+}
+stage ('2Build'){
+    sh "echo maven build"
+    sh "${MHD}/bin/mvn package" 
+}
+stage ('3Codequalitytest'){
+    sh "echo performing sonarqube test"
+    sh "${MHD}/bin/mvn sonar:sonar"
+}
+stage ('4Backup'){
+    sh "echo code backup in nexus"
+    sh "${MHD}/bin/mvn deploy"
+}
+stage ('5Depolytotomcat'){
+    sh "echo deploy to tomcat"
+    deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://52.91.116.247:8080/')], contextPath: null, war: 'target/*.war'
+}
+ stage ('6Approval'){
+     sh "echo Approval is needed"
+     timeout (time:2, unit:'DAYS'){
+         input message: 'Approval for Production env'
+     }
+ }
+ stage ('7DeploytoProd'){
+     sh "echo deploy to prod env"
+     deploy adapters: [tomcat9(credentialsId: 'tomcat-cred', path: '', url: 'http://52.91.116.247:8080/')], contextPath: null, war: 'target/*.war'
+ }
+}
